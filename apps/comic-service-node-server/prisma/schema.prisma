@@ -1,0 +1,81 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Chapter {
+  comic       Comic?              @relation(fields: [comicId], references: [id])
+  comicId     String?
+  createdAt   DateTime            @default(now())
+  id          String              @id @default(cuid())
+  images      EnumChapterImages[]
+  numberField Int?
+  releaseDate DateTime?
+  thumbnail   Json?
+  title       String?
+  updateDate  DateTime?
+  updatedAt   DateTime            @updatedAt
+}
+
+model Comic {
+  chapters  Chapter[]
+  cover     Json?
+  createdAt DateTime          @default(now())
+  genres    EnumComicGenres[]
+  id        String            @id @default(cuid())
+  status    EnumComicStatus?
+  summary   String?
+  tags      EnumComicTags[]
+  title     String?
+  updatedAt DateTime          @updatedAt
+}
+
+model Bookmark {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model ReadingHistory {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  createdAt DateTime @default(now())
+  email     String?  @unique
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+enum EnumChapterImages {
+  Option1
+}
+
+enum EnumComicGenres {
+  Option1
+}
+
+enum EnumComicStatus {
+  Option1
+}
+
+enum EnumComicTags {
+  Option1
+}
